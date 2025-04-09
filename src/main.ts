@@ -14,9 +14,11 @@ const aspectRatio = width / height;
 const nearPlane = 0.1;
 const farPlane = 100;
 
+const colorLightBlue: THREE.ColorRepresentation = 0xADD8E6;
 // create the rendered and set it to cover whole page
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(width, height);
+renderer.setClearColor(colorLightBlue);
 // todo: what exactly does it do? nothing is drawn if this is commented
 document.body.appendChild(renderer.domElement);
 
@@ -63,6 +65,7 @@ function loop() {
 
    // pass scene and camera to renderer and render the scene
   renderer.render(scene, mainCamera);
+  
 
 }
 
