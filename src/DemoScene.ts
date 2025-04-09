@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const gltfLoader = new GLTFLoader(); //todo: find a better place for it
-//export let loadedObject: Object;
 
 export default class DemoScene extends THREE.Scene
 {

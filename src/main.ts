@@ -9,7 +9,7 @@ import { TransformControls } from 'three/addons/controls/TransformControls.js';
 const width = window.innerWidth;
 const height = window.innerHeight;
 
-// camera params
+// const params
 const fieldOfView = 75; // todo: play with it: Unity uses 60
 const aspectRatio = width / height;
 const nearPlane = 0.1;
@@ -18,49 +18,72 @@ const farPlane = 100;
 const colorLightBlue: THREE.ColorRepresentation = 0xADD8E6;
 const colorRed: THREE.ColorRepresentation = 0xFF0000;
 
-// create the rendered and set it to cover whole page
+// create global variables
 const renderer = new THREE.WebGLRenderer();
-renderer.setSize(width, height);
-renderer.setClearColor(colorLightBlue);
-// todo: what exactly does it do? nothing is drawn if this is commented
-document.body.appendChild(renderer.domElement);
-
-
-// add camera
 const mainCamera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
-mainCamera.position.set(0, 2, 4);    
-mainCamera.lookAt(0, 0, 0);
-
-// creat controls to move camera and look around
-const cameraControls = new OrbitControls( mainCamera, renderer.domElement );
+const scene = new DemoScene();
+const cameraControls = new OrbitControls( mainCamera, renderer.domElement );  // controls to move camera and look around
 
 // array to story objects we want to check against during recast
 let selectableObjects: THREE.Object3D[] = [];
 
-// add a scene
-const scene = new DemoScene();
-scene.addFloor();
-scene.addLights();
-scene.loadAndAddObjectAsync();
-
 // Transform Controls for Gizmos
 const transformControls = new TransformControls(mainCamera, renderer.domElement);
-transformControls.setMode('translate');
-scene.add(transformControls.getHelper());
 
 //Handling selection of an object
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
-
-// there's probably a way to define zero vector
 const markerProp = scene.addBox(colorRed, new THREE.Vector3(0,0,0), new THREE.Vector3(0.01,10.0,0.01));
-scene.add(markerProp);
 
-const box = scene.addBox(colorRed, new THREE.Vector3(2,2,-3), new THREE.Vector3(1,1,1));
-scene.add(box);
-selectableObjects.push(box);
-//todo: would be nice to get rid of any
- function onPointerMove( event: any ) {
+function Init()
+{
+  // init renderer and set it to cover whole page
+  renderer.setSize(width, height);
+  renderer.setClearColor(colorLightBlue);
+  document.body.appendChild(renderer.domElement); // todo: what exactly does it do? nothing is drawn if this is commented
+
+  // init camera
+  mainCamera.position.set(0, 2, 4);    
+  mainCamera.lookAt(0, 0, 0);
+  
+  // setup for the scene
+  scene.addLights();
+  scene.addFloor();
+  
+  // loading and adding table
+  scene.loadAndAddObjectAsync();
+
+  // setup gizmo
+  transformControls.setMode('translate');
+  scene.add(transformControls.getHelper());
+
+  // add mesh prop
+  const box = scene.addBox(colorRed, new THREE.Vector3(2,2,-3), new THREE.Vector3(1,1,1));
+  scene.add(box);
+  selectableObjects.push(box);
+
+  // add debug marker as helper to check recast results 
+  scene.add(markerProp);
+}
+
+// main loop of application
+function loop() 
+{
+  // todo: considering removing. it worked without update from docs: "required if controls.enableDamping or controls.autoRotate are set to true"
+  cameraControls.update();
+
+   // pass scene and camera to renderer and render the scene
+  renderer.render(scene, mainCamera);
+  // Browser handles timing and throttling
+  requestAnimationFrame(loop);
+}
+
+// >>>>> start of application <<<<<
+Init();
+requestAnimationFrame(loop);
+
+// event handlers
+function onPointerMove( event: any ) {  //todo: would be nice to get rid of any
 
 	// calculate pointer position in normalized device coordinates (-1 to +1) for both components
   pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -84,20 +107,18 @@ selectableObjects.push(box);
   }
 }
 
-// main loop of application
-function loop() {
-  // Browser handles timing and throttling
-  requestAnimationFrame(loop);
+function onWindowResize()
+{
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
-  // todo: considering removing. it worked without update from docs: "required if controls.enableDamping or controls.autoRotate are set to true"
-  cameraControls.update();
+  mainCamera.aspect = width / height;
+  mainCamera.updateProjectionMatrix();
 
-   // pass scene and camera to renderer and render the scene
-  renderer.render(scene, mainCamera);
+  renderer.setSize(width, height);
 }
 
-
-
+// listeners
+window.addEventListener( 'resize', onWindowResize );
 window.addEventListener( 'pointermove', onPointerMove );
 
-requestAnimationFrame(loop);
