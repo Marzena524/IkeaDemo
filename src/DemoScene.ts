@@ -3,7 +3,7 @@ import * as THREE from 'three';
 export default class DemoScene extends THREE.Scene
 {
     create()
-    {
+    {   
         // create a prop to see something on a screen 
         const geometry = new THREE.BoxGeometry();
         const material = new THREE.MeshPhongMaterial({color: 0xFF0000});
