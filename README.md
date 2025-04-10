@@ -6,17 +6,18 @@ I didn't complete all the steps. The elements that are done:
 - Added one object to scene from .glb files. 
 - Implemented selecting a model and a box. 
     - when item is selected the gizmo is attached to it.
-    - it's possible to see long red indicator when hovering over objects, if there was more time it could be semi transpart bounding box instead. Only specific objects can be selected.
+    - it's possible to see long red indicator when hovering over objects, if there was more time it could be semi transpart bounding box instead.
+    - only specific objects can be selected.
 - Created function that moves vertices of the plane, when they are clicked.
 - Added texture to a wall
 - Added basic setup for scene and lighting.
 
 Priorities
 - I prioritized the parts of the assignment that had the most risk in my opinion of taking up time and troubleshooting: 
-    -  loading model.
+    - loading model.
     - selecting an object.
     - modifying vertixes.
-- I assumed that many of the elements that would improve visual quality are more a matter of tinkering and tweaking the setup, which would be satisfying to do in next iterations,but I didn't want to risk running out of time with big chunks of work left.
+- I assumed that many of the elements that would improve visual quality are more a matter of tinkering and tweaking the setup, which would be satisfying to do in next iterations, but I didn't want to risk running out of time with big chunks of work left.
 - I focused on minimum valiable solutions. Each of the feature could use more attention to details and visual improvements. 
     - for example: improving lights and shadows, textures, materials etc.
 
