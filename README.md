@@ -7,9 +7,9 @@ I didn't complete all the steps. The elements that are done:
 - Implemented selecting a model and a box. 
     - when item is selected the gizmo is attached to it.
     - it's possible to see long red indicator when hovering over objects, if there was more time it could be semi transpart bounding box instead. Only specific objects can be selected.
-- Created function that moves vertices of the plane, when they are clicked. (in local coords, next first thing would be to fix it)
+- Created function that moves vertices of the plane, when they are clicked.
 - Added texture to a wall
-- Added basic setup for scene and fighting.
+- Added basic setup for scene and lighting.
 
 Priorities
 - I prioritized the parts of the assignment that had the most risk in my opinion of taking up time and troubleshooting: 
