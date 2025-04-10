@@ -1,7 +1,7 @@
 import './style.css'  // todo: remove?
 import * as THREE from 'three';
 import DemoScene from './DemoScene';
-
+//import { meshWarpOnClick } from './MeshWarp';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
@@ -73,7 +73,8 @@ function init() {
 
   // loading and adding table
   scene.loadObjectAsync(onLoadedObject);
-  
+  scene.addPlaneMesh();
+
   // setup gizmo
   transformControls.setMode('translate');
   scene.add(transformControls.getHelper());
@@ -105,6 +106,37 @@ function updateSelection()  // todo: it's still very slugish
   }
 }
 
+function OnMeshClick() {
+  const positionInLocal = new THREE.Vector3();
+  const clickDistanceRangeSquared = 0.5 * 0.5;
+  const clickOffset = 1;
+
+  // todo: fix doing recast twice in each click 
+  raycaster.setFromCamera(mouseCoords, mainCamera);
+  const hitObjects = raycaster.intersectObjects(scene.children);
+  // making sure recast hit mesh
+  if (hitObjects.length > 0 && (hitObjects[0].object as THREE.Mesh).geometry) {
+    const mesh = hitObjects[0].object as THREE.Mesh;
+    const geometry = mesh.geometry;
+    const point = hitObjects[0].point;
+    const atribute = geometry.attributes.position;
+
+    // iterating through vertices, checking which are close to point that was hit 
+    for (let i = 0; i < atribute.count; i++) {
+      positionInLocal.set(atribute.getX(i), atribute.getY(i), atribute.getZ(i));
+      const positionInWorld = mesh.localToWorld(positionInLocal);
+      const distanceSquared = point.distanceToSquared(positionInWorld);
+      // adding extra offset to vertices that are in range
+      if (distanceSquared < clickDistanceRangeSquared) {
+        atribute.setZ(i, atribute.getZ(i) + clickOffset); //todo: moves vertices along Z in local, should change world position, convert to local and then set
+      }
+    }
+    geometry.computeVertexNormals();
+    geometry.attributes.position.needsUpdate = true;
+  }
+}
+
+
 // main loop of application
 function loop() {
   cameraControls.update();
@@ -123,12 +155,12 @@ function onMouseMove(event: any)  //todo: would be nice to get rid of any
   mouseCoords.y = - (event.clientY / window.innerHeight) * 2 + 1;
 }
 
-//let selectedObject: [boolean, THREE.Object3D];  // todo: find something like optional<>
-
 function onClick(event: any) {
 
   mouseCoords.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouseCoords.y = - (event.clientY / window.innerHeight) * 2 + 1;
+  
+  OnMeshClick();
 
   raycaster.setFromCamera(mouseCoords, mainCamera);
   const hitObjects = raycaster.intersectObjects(selectableObjects, true);
@@ -136,11 +168,9 @@ function onClick(event: any) {
   if (hitObjects.length > 0) {
     const selectedObject = hitObjects[0].object;
     transformControls.attach(selectedObject);
-    //selectedObject = [true, hitObjects[0].object];
   }
   else {
     transformControls.detach();
-    //selectedObject[0] = false;
   }
 }
 

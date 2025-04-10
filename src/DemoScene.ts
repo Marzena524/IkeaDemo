@@ -35,6 +35,23 @@ export default class DemoScene extends THREE.Scene {
     }
 
 
+    addPlaneMesh(): THREE.Mesh {
+        // load texture
+        const texture = new THREE.TextureLoader().load('assets/coral_stone_wall_diff_4k.jpg');
+        // immediately use the texture for material creation 
+        const material = new THREE.MeshBasicMaterial({ map: texture });
+
+        // create plane
+        const planeWidth = 10;
+        const planeHeight = 10;
+        const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight, 300, 300);
+        const plane = new THREE.Mesh(geometry, material);
+        plane.rotation.y = -Math.PI / 2;
+        plane.position.set(4, 0, 0);
+        this.add(plane);
+        return plane;
+    }
+
     async loadObjectAsync(onLoaded: (model: THREE.Group | null) => void) {
         const gltf = gltfLoader.loadAsync(gltTablePath);
         gltf.then((result) => {
