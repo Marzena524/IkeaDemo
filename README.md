@@ -27,13 +27,17 @@ File structure and code quality:
     - encapsulated code in functions
     - separated initialization and update funtionality
     - there are still many potential improvements, like reducing amount of global variables and moving code from main.ts in separate files.
-- The code quality is probably far from senior level coding standards, I would need a bit more time to learn best practices in TypeScript. 
+- The code quality is probably far from senior level coding standards, I would need a bit more time to learn best practices in TypeScript.
 
-The command I used to setup Three.js
-> npm install three
-might recuired extra command if import causes errors:
-> npm i --save-dev @types/three
-> 
-command to run it: s
-> npm run dev
+The command I used to setup Three.js 
+
+`npm install three`
+
+it might recuired extra command if import causes errors:
+
+`npm i --save-dev @types/three`
+
+command to run it:
+
+`npm run dev`
 
