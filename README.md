@@ -1,6 +1,6 @@
 The assignment was very fun to work on and I enjoyed learning a lot of new things. I use different tools in day to day work, so almost all the tech in this assignment was new to me. As part of preparation I got basic overview of TypeScript, added configuration for npm, git, Three.js and Vite, mostly relying on tutorials.
 
-I spent around 10 hours on preparation and another 8 on the actual implementation. Unfortunatelly most of this time was consumed by figuring out things, less on writing code, so although I liked the chanllenge a lot, I'm aware that the time invested doesn't translate in high quality of the results.
+I spent around 10 hours on preparation and another 8 on the actual assignment. Unfortunatelly most of this time was consumed by figuring out things, less on writing code, so although I liked the chanllenge a lot, I'm aware that the time invested doesn't translate in high quality of the results.
 
 I didn't complete all the steps. The elements that are done:
 - Added one object to scene from .glb files. 
